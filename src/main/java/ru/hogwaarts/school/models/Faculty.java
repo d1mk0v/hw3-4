@@ -1,61 +1,55 @@
-package ru.hogwaarts.school.model;
+package ru.hogwaarts.school.models;
 
 import java.util.Objects;
 
-public class Student {
+public class Faculty {
     private long id;
     private String name;
-    private int age;
-
-    public Student(long id, String name, int age) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-    }
+    private String color;
 
     public long getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
     }
 
     public void setId(long id) {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return id == student.id && age == student.age && Objects.equals(name, student.name);
+        Faculty faculty = (Faculty) o;
+        return id == faculty.id && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age);
+        return Objects.hash(id, name, color);
     }
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Faculty{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", age=" + age +
+                ", color='" + color + '\'' +
                 '}';
     }
 }

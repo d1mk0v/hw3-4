@@ -1,8 +1,8 @@
-package ru.hogwaarts.school.service;
+package ru.hogwaarts.school.services;
 
 import org.springframework.stereotype.Service;
-import ru.hogwaarts.school.exception.StudentNotFoundException;
-import ru.hogwaarts.school.model.Student;
+import ru.hogwaarts.school.exceptions.StudentNotFoundException;
+import ru.hogwaarts.school.models.Student;
 
 import java.util.HashMap;
 import java.util.List;

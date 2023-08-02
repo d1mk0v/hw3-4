@@ -1,6 +1,6 @@
-package ru.hogwaarts.school.service;
+package ru.hogwaarts.school.services;
 
-import ru.hogwaarts.school.model.Faculty;
+import ru.hogwaarts.school.models.Faculty;
 
 import java.util.List;
 

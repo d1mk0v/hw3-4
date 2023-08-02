@@ -1,8 +1,8 @@
-package ru.hogwaarts.school.service;
+package ru.hogwaarts.school.services;
 
 import org.springframework.stereotype.Service;
-import ru.hogwaarts.school.exception.FacultyNotFoundException;
-import ru.hogwaarts.school.model.Faculty;
+import ru.hogwaarts.school.exceptions.FacultyNotFoundException;
+import ru.hogwaarts.school.models.Faculty;
 
 import java.util.HashMap;
 import java.util.List;

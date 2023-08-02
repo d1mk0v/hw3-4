@@ -1,10 +1,10 @@
-package ru.hogwaarts.school.controller;
+package ru.hogwaarts.school.controllers;
 
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwaarts.school.model.Student;
-import ru.hogwaarts.school.service.StudentService;
+import ru.hogwaarts.school.models.Student;
+import ru.hogwaarts.school.services.StudentService;
 
 import java.util.List;
 
