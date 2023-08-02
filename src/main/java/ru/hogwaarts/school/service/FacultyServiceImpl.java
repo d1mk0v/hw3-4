@@ -5,7 +5,9 @@ import ru.hogwaarts.school.exception.FacultyNotFoundException;
 import ru.hogwaarts.school.model.Faculty;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -47,5 +49,11 @@ public class FacultyServiceImpl implements FacultyService {
             throw new FacultyNotFoundException("Факультет не найден!!!");
         }
         faculties.remove(id);
+    }
+
+    public List<Faculty> colorFilter(String color){
+        return faculties.values().stream()
+                .filter(e -> e.getColor().contains(color))
+                .collect(Collectors.toList());
     }
 }

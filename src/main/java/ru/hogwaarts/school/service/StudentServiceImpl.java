@@ -5,7 +5,9 @@ import ru.hogwaarts.school.exception.StudentNotFoundException;
 import ru.hogwaarts.school.model.Student;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -48,5 +50,12 @@ public class StudentServiceImpl implements StudentService {
             throw new StudentNotFoundException("Студент не найден!!!");
         }
         students.remove(id);
+    }
+
+    @Override
+    public List<Student> ageFilter(int age) {
+        return students.values().stream()
+                .filter(e -> e.getAge() == age)
+                .collect(Collectors.toList());
     }
 }
