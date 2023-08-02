@@ -53,7 +53,7 @@ public class FacultyController {
     }
 
     @GetMapping("{color}")
-    public List<Faculty> colorFilter(@PathVariable String color){
-        return facultyService.colorFilter(color);
+    public List<Faculty> findByColor (@PathVariable String color){
+        return facultyService.findByColor(color);
     }
 }

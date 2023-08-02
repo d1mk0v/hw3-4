@@ -6,7 +6,6 @@ import ru.hogwaarts.school.repositories.FacultyRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -24,7 +23,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public Optional<Faculty> findFaculty(long id) {
-        return facultyRepository.findBy(id);
+        return facultyRepository.findById(id);
     }
 
     @Override
@@ -37,7 +36,7 @@ public class FacultyServiceImpl implements FacultyService {
         facultyRepository.deleteById(id);
     }
     @Override
-    public List<Faculty> colorFilter(String color){
-        return facultyRepository.findBy(color);
+    public List<Faculty> findByColor (String color){
+        return facultyRepository.findByColor(color);
     }
 }

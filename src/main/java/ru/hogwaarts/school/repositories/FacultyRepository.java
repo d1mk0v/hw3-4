@@ -7,5 +7,5 @@ import ru.hogwaarts.school.models.Student;
 import java.util.List;
 
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
-    List<Faculty> colorFilter(String color);
+    List<Faculty> findByColor (String color);
 }
