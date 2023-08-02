@@ -1,12 +1,13 @@
-package ru.hogwaarts.school.controller;
+package ru.hogwaarts.school.controllers;
 
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwaarts.school.model.Student;
-import ru.hogwaarts.school.service.StudentService;
+import ru.hogwaarts.school.models.Student;
+import ru.hogwaarts.school.services.StudentService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("student")
@@ -19,11 +20,11 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Student> findStudent(@PathVariable long id) {
+    public ResponseEntity<Optional<Student>> findStudent(@PathVariable long id) {
 
-        Student student = studentService.findStudent(id);
+        Optional<Student> student = studentService.findStudent(id);
 
-        if (student == null) {
+        if (student.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(student);
@@ -38,7 +39,7 @@ public class StudentController {
     @PutMapping("{id}")
     public ResponseEntity<Student> editStudent(@RequestBody Student student, @PathVariable long id) {
 
-        Student foundStudent = studentService.editStudent(id, student);
+        Student foundStudent = studentService.editStudent(student);
 
         if (foundStudent == null) {
             return ResponseEntity.notFound().build();
