@@ -1,59 +1,43 @@
 package ru.hogwaarts.school.services;
 
 import org.springframework.stereotype.Service;
-import ru.hogwaarts.school.exceptions.FacultyNotFoundException;
 import ru.hogwaarts.school.models.Faculty;
+import ru.hogwaarts.school.repositories.FacultyRepository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
-    private final Map<Long, Faculty> faculties = new HashMap<>();
-    private long count = 0;
+    private final FacultyRepository facultyRepository;
+
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     @Override
     public Faculty addFaculty(Faculty faculty) {
-        faculty.setId(count++);
-        faculties.put(faculty.getId(), faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     @Override
-    public Faculty findFaculty(long id) {
-
-        if (!faculties.containsKey(id)) {
-            throw new FacultyNotFoundException("Факультет не найден!!!");
-        }
-        return faculties.get(id);
+    public Optional<Faculty> findFaculty(long id) {
+        return facultyRepository.findBy(id);
     }
 
     @Override
-    public Faculty editFaculty(long id, Faculty faculty) {
-
-        if (!faculties.containsKey(id)) {
-            throw new FacultyNotFoundException("Факультет не найден!!!");
-        }
-
-        faculties.put(id, faculty);
-        return faculty;
+    public Faculty editFaculty(Faculty faculty) {
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public void deleteFaculty(long id) {
-
-        if (!faculties.containsKey(id)) {
-            throw new FacultyNotFoundException("Факультет не найден!!!");
-        }
-        faculties.remove(id);
+        facultyRepository.deleteById(id);
     }
-
+    @Override
     public List<Faculty> colorFilter(String color){
-        return faculties.values().stream()
-                .filter(e -> e.getColor().contains(color))
-                .collect(Collectors.toList());
+        return facultyRepository.findBy(color);
     }
 }

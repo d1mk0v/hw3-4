@@ -3,14 +3,15 @@ package ru.hogwaarts.school.services;
 import ru.hogwaarts.school.models.Faculty;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FacultyService {
 
     Faculty addFaculty(Faculty faculty);
 
-    Faculty findFaculty(long id);
+    Optional<Faculty> findFaculty(long id);
 
-    Faculty editFaculty(long id, Faculty faculty);
+    Faculty editFaculty(Faculty faculty);
 
     void deleteFaculty(long id);
 

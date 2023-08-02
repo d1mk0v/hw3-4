@@ -1,10 +1,11 @@
 package ru.hogwaarts.school.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.models.Student;
 
 import java.util.List;
 
-public interface StudentRepository extends JpaRepository<Student, Long> {
-    List<Student> findByAge(int age);
+public interface FacultyRepository extends JpaRepository<Faculty, Long> {
+    List<Faculty> colorFilter(String color);
 }

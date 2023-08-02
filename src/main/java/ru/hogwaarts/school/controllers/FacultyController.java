@@ -7,6 +7,7 @@ import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.services.FacultyService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("faculty")
@@ -18,11 +19,11 @@ public class FacultyController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Faculty> findFaculty(@PathVariable long id){
+    public ResponseEntity<Optional<Faculty>> findFaculty(@PathVariable long id){
 
-        Faculty faculty = facultyService.findFaculty(id);
+        Optional<Faculty> faculty = facultyService.findFaculty(id);
 
-        if (faculty == null){
+        if (faculty.isEmpty()){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(faculty);
@@ -36,7 +37,7 @@ public class FacultyController {
     @PutMapping("{id}")
     public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty, @PathVariable long id){
 
-        Faculty foundFaculty = facultyService.editFaculty(id, faculty);
+        Faculty foundFaculty = facultyService.editFaculty(faculty);
 
         if (foundFaculty == null){
             return ResponseEntity.notFound().build();
