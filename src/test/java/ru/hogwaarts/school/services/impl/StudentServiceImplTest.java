@@ -1,4 +1,4 @@
-package ru.hogwaarts.school.services;
+package ru.hogwaarts.school.services.impl;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -85,4 +85,5 @@ public class StudentServiceImplTest {
         assertEquals(students, filteredStudents);
         verify(studentRepository, Mockito.times(1)).findByAge(age);
     }
+
 }
