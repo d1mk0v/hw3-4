@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwaarts.school.models.Student;
 import ru.hogwaarts.school.services.api.StudentService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,12 @@ public class StudentController {
     @GetMapping("{age}")
     public List<Student> ageFilter(@PathVariable int age) {
         return studentService.ageFilter(age);
+    }
+
+    @GetMapping("/age/between")
+    public Collection<Student> getStudentsByAgeBetween(@RequestParam int min,
+                                                       @RequestParam int max) {
+        return studentService.getStudentsByAgeBetween(min, max);
     }
 
 }

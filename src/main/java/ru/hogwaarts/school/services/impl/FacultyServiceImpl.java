@@ -5,6 +5,7 @@ import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.repositories.FacultyRepository;
 import ru.hogwaarts.school.services.api.FacultyService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,5 +40,10 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public List<Faculty> findByColor (String color){
         return facultyRepository.findByColor(color);
+    }
+
+    @Override
+    public Collection<Faculty> getFacultyByNameOrColorIgnoreCase(String name, String color) {
+        return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
     }
 }

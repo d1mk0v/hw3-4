@@ -2,6 +2,7 @@ package ru.hogwaarts.school.services.api;
 
 import ru.hogwaarts.school.models.Faculty;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +18,5 @@ public interface FacultyService {
 
     List<Faculty> findByColor (String color);
 
+    Collection<Faculty> getFacultyByNameOrColorIgnoreCase(String name, String color);
 }

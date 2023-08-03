@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.services.api.FacultyService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,5 +56,12 @@ public class FacultyController {
     @GetMapping("{color}")
     public List<Faculty> findByColor (@PathVariable String color){
         return facultyService.findByColor(color);
+    }
+
+    @GetMapping("/filter")
+    public Collection<Faculty> getFacultiesByNameOrColourIgnoreCase(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String color) {
+        return facultyService.getFacultyByNameOrColorIgnoreCase(name, color);
     }
 }
