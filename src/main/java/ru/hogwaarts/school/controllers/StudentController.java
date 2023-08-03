@@ -3,9 +3,11 @@ package ru.hogwaarts.school.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.models.Student;
-import ru.hogwaarts.school.services.StudentService;
+import ru.hogwaarts.school.services.api.StudentService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,4 +61,14 @@ public class StudentController {
         return studentService.ageFilter(age);
     }
 
+    @GetMapping("/age/between")
+    public Collection<Student> getStudentsByAgeBetween(@RequestParam int min,
+                                                       @RequestParam int max) {
+        return studentService.getStudentsByAgeBetween(min, max);
+    }
+
+    @GetMapping("/faculty/{id}")
+    public Faculty getStudentFaculty(@PathVariable Long id) {
+        return studentService.getStudentFaculty(id);
+    }
 }
