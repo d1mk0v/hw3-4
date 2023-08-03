@@ -3,6 +3,7 @@ package ru.hogwaarts.school.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.models.Student;
 import ru.hogwaarts.school.services.api.StudentService;
 
@@ -66,4 +67,8 @@ public class StudentController {
         return studentService.getStudentsByAgeBetween(min, max);
     }
 
+    @GetMapping("/faculty/{id}")
+    public Faculty getStudentFaculty(@PathVariable Long id) {
+        return studentService.getStudentFaculty(id);
+    }
 }

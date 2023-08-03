@@ -1,5 +1,6 @@
 package ru.hogwaarts.school.services.api;
 
+import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.models.Student;
 
 import java.util.Collection;
@@ -19,4 +20,6 @@ public interface StudentService {
     List<Student> ageFilter(int age);
 
     Collection<Student> getStudentsByAgeBetween(int min, int max);
+
+    Faculty getStudentFaculty(Long id);
 }

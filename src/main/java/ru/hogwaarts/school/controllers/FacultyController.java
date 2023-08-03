@@ -4,6 +4,7 @@ package ru.hogwaarts.school.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwaarts.school.models.Faculty;
+import ru.hogwaarts.school.models.Student;
 import ru.hogwaarts.school.services.api.FacultyService;
 
 import java.util.Collection;
@@ -63,5 +64,10 @@ public class FacultyController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String color) {
         return facultyService.getFacultyByNameOrColorIgnoreCase(name, color);
+    }
+
+    @GetMapping("/students-by-id/{id}")
+    public Collection<Student> getFacultyStudents(@PathVariable Long id) {
+        return facultyService.getFacultyStudents(id);
     }
 }

@@ -2,6 +2,7 @@ package ru.hogwaarts.school.services.impl;
 
 import org.springframework.stereotype.Service;
 import ru.hogwaarts.school.models.Faculty;
+import ru.hogwaarts.school.models.Student;
 import ru.hogwaarts.school.repositories.FacultyRepository;
 import ru.hogwaarts.school.services.api.FacultyService;
 
@@ -45,5 +46,10 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Collection<Faculty> getFacultyByNameOrColorIgnoreCase(String name, String color) {
         return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    }
+
+    @Override
+    public Collection<Student> getFacultyStudents(Long id) {
+        return facultyRepository.findById(id).map(Faculty::getStudents).orElse(null);
     }
 }

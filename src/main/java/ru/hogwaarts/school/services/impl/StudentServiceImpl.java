@@ -1,6 +1,7 @@
 package ru.hogwaarts.school.services.impl;
 
 import org.springframework.stereotype.Service;
+import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.models.Student;
 import ru.hogwaarts.school.repositories.StudentRepository;
 import ru.hogwaarts.school.services.api.StudentService;
@@ -46,5 +47,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Collection<Student> getStudentsByAgeBetween(int min, int max) {
         return studentRepository.findByAgeBetween(min, max);
+    }
+
+    @Override
+    public Faculty getStudentFaculty(Long id) {
+        return studentRepository.findById(id).map(Student::getFaculty).orElse(null);
     }
 }
