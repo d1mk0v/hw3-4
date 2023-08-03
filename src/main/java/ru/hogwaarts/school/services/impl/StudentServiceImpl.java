@@ -1,8 +1,9 @@
-package ru.hogwaarts.school.services;
+package ru.hogwaarts.school.services.impl;
 
 import org.springframework.stereotype.Service;
 import ru.hogwaarts.school.models.Student;
 import ru.hogwaarts.school.repositories.StudentRepository;
+import ru.hogwaarts.school.services.api.StudentService;
 
 import java.util.List;
 import java.util.Optional;

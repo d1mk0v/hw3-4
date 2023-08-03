@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.hogwaarts.school.models.Student;
 import ru.hogwaarts.school.repositories.StudentRepository;
+import ru.hogwaarts.school.services.api.StudentService;
+import ru.hogwaarts.school.services.impl.StudentServiceImpl;
 
 import java.util.Collections;
 import java.util.List;

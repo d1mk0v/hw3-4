@@ -4,7 +4,7 @@ package ru.hogwaarts.school.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwaarts.school.models.Faculty;
-import ru.hogwaarts.school.services.FacultyService;
+import ru.hogwaarts.school.services.api.FacultyService;
 
 import java.util.List;
 import java.util.Optional;

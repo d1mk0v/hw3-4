@@ -1,4 +1,4 @@
-package ru.hogwaarts.school.services;
+package ru.hogwaarts.school.services.api;
 
 import ru.hogwaarts.school.models.Student;
 
