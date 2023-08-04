@@ -44,9 +44,9 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+    public void uploadAvatar(Long id, MultipartFile avatarFile) throws IOException {
 
-        Student student = studentRepository.getReferenceById(studentId);
+        Student student = studentRepository.getReferenceById(id);
 
         Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -60,7 +60,7 @@ public class AvatarServiceImpl implements AvatarService {
         ) {
             bis.transferTo(bos);
         }
-        Avatar avatar = findAvatar(studentId);
+        Avatar avatar = findAvatar(id);
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(avatarFile.getSize());
@@ -76,7 +76,7 @@ public class AvatarServiceImpl implements AvatarService {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             BufferedImage image = ImageIO.read(bis);
 
-            int height = image.getHeight() / (image.getHeight() / 100);
+            int height = image.getHeight() / (image.getWidth() / 100);
 
             BufferedImage preview = new BufferedImage(100, height, image.getType());
             Graphics2D graphics2D = preview.createGraphics();
@@ -93,7 +93,7 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     @Override
-    public Avatar findAvatar(Long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
+    public Avatar findAvatar(Long id) {
+        return avatarRepository.findByStudentId(id).orElse(new Avatar());
     }
 }

@@ -25,7 +25,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<Student> findStudent(long id) {
+    public Optional<Student> findStudent(Long id) {
         return studentRepository.findById(id);
     }
 

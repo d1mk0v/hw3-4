@@ -11,7 +11,7 @@ public interface StudentService {
 
     Student addStudent(Student student);
 
-    Optional<Student> findStudent(long id);
+    Optional<Student> findStudent(Long id);
 
     Student editStudent(Student student);
 
