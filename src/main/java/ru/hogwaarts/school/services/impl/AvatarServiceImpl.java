@@ -9,7 +9,10 @@ import ru.hogwaarts.school.repositories.AvatarRepository;
 import ru.hogwaarts.school.repositories.StudentRepository;
 import ru.hogwaarts.school.services.api.AvatarService;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -66,16 +69,31 @@ public class AvatarServiceImpl implements AvatarService {
         avatarRepository.save(avatar);
     }
 
-    private byte[] generateDataForDB(Path filePath) {
-        return new byte[0];
+    private byte[] generateDataForDB(Path filePath) throws IOException {
+        try (
+                InputStream is = Files.newInputStream(filePath);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            BufferedImage image = ImageIO.read(bis);
+
+            int height = image.getHeight() / (image.getHeight() / 100);
+
+            BufferedImage preview = new BufferedImage(100, height, image.getType());
+            Graphics2D graphics2D = preview.createGraphics();
+            graphics2D.drawImage(image, 0, 0, 100, height, null);
+            graphics2D.dispose();
+
+            ImageIO.write(preview, getExtensions(filePath.getFileName().toString()), baos);
+            return baos.toByteArray();
+        }
     }
 
-    private Object getExtensions(String originalFilename) {
-        return null;
+    private String getExtensions(String filename) {
+        return filename.substring(filename.lastIndexOf(".") + 1);
     }
 
     @Override
     public Avatar findAvatar(Long studentId) {
-        return null;
+        return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 }
