@@ -11,11 +11,11 @@ public interface FacultyService {
 
     Faculty addFaculty(Faculty faculty);
 
-    Optional<Faculty> findFaculty(long id);
+    Optional<Faculty> findFaculty(Long id);
 
     Faculty editFaculty(Faculty faculty);
 
-    void deleteFaculty(long id);
+    void deleteFaculty(Long id);
 
     List<Faculty> findByColor (String color);
 
