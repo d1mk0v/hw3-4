@@ -10,7 +10,12 @@ import ru.hogwaarts.school.repositories.StudentRepository;
 import ru.hogwaarts.school.services.api.AvatarService;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static io.swagger.v3.core.util.AnnotationsUtils.getExtensions;
+import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 @Transactional
@@ -40,6 +45,33 @@ public class AvatarServiceImpl implements AvatarService {
 
         Student student = studentRepository.getReferenceById(studentId);
 
+        Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
+
+        try (
+                InputStream is = avatarFile.getInputStream();
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+        ) {
+            bis.transferTo(bos);
+        }
+        Avatar avatar = findAvatar(studentId);
+        avatar.setStudent(student);
+        avatar.setFilePath(filePath.toString());
+        avatar.setFileSize(avatarFile.getSize());
+        avatar.setMediaType(avatarFile.getContentType());
+        avatar.setData(generateDataForDB(filePath));
+        avatarRepository.save(avatar);
+    }
+
+    private byte[] generateDataForDB(Path filePath) {
+        return new byte[0];
+    }
+
+    private Object getExtensions(String originalFilename) {
+        return null;
     }
 
     @Override
