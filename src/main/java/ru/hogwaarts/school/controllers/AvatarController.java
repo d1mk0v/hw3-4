@@ -23,8 +23,8 @@ public class AvatarController {
 
     private final AvatarService avatarService;
 
-    public AvatarController(AvatarServiceImpl avatarServiceImpl) {
-        this.avatarService = avatarServiceImpl;
+    public AvatarController(AvatarService avatarService) {
+        this.avatarService = avatarService;
     }
 
     @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
