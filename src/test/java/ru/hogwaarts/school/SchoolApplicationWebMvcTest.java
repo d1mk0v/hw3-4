@@ -224,7 +224,7 @@ class SchoolApplicationWebMvcTest {
         when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/faculty/")
+                        .put("/faculty/1")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
