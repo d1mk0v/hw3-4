@@ -60,7 +60,7 @@ public class FacultyController {
     }
 
     @GetMapping("/filter")
-    public Collection<Faculty> getFacultiesByNameOrColourIgnoreCase(
+    public Collection<Faculty> getFacultiesByNameOrColorIgnoreCase(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String color) {
         return facultyService.getFacultyByNameOrColorIgnoreCase(name, color);

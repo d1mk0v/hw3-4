@@ -134,7 +134,7 @@ class SchoolApplicationTest {
         }
 
         @Test
-        void getFacultiesByNameOrColourIgnoreCaseTest() throws Exception {
+        void getFacultiesByNameOrColorIgnoreCaseTest() throws Exception {
 
                 Assertions
                         .assertThat(this.testRestTemplate.getForObject(

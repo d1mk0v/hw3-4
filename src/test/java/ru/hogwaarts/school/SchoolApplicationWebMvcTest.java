@@ -27,6 +27,7 @@ import ru.hogwaarts.school.services.impl.StudentServiceImpl;
 
 import java.util.*;
 
+import static java.awt.Color.red;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -154,7 +155,7 @@ class SchoolApplicationWebMvcTest {
 
         when(studentRepository.findByAge(1)).thenReturn(list);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/" + student.getAge())
+                        .get("/student/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
@@ -243,11 +244,10 @@ class SchoolApplicationWebMvcTest {
 
         when(facultyRepository.findByColor("red")).thenReturn(list);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/red")
+                        .get("/faculty/?color=red")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
-
     }
 
     @Test
@@ -262,7 +262,7 @@ class SchoolApplicationWebMvcTest {
         when(facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(anyString(), anyString())).thenReturn(list);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/filter" + faculty.getColor())
+                        .get("/faculty/filter?name=red&color=green")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
