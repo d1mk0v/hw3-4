@@ -1,16 +1,20 @@
 package ru.hogwaarts.school;
 
 import net.minidev.json.JSONObject;
+import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwaarts.school.controllers.AvatarController;
@@ -28,6 +32,7 @@ import ru.hogwaarts.school.services.impl.StudentServiceImpl;
 import java.util.*;
 
 import static java.awt.Color.red;
+import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -35,6 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 @ExtendWith(MockitoExtension.class)
+@RunWith(SpringRunner.class)
+@AutoConfigureWebMvc
 class SchoolApplicationWebMvcTest {
 
     @Autowired
@@ -76,7 +83,7 @@ class SchoolApplicationWebMvcTest {
     public final JSONObject facultyObject = new JSONObject();
 
     @BeforeEach
-    void init() throws Exception {
+    void init() throws JSONException {
 
         long id = 1L;
         String name = "name";
@@ -88,9 +95,9 @@ class SchoolApplicationWebMvcTest {
 
         student = new Student(id, name, age);
 
-        studentObject.put("id", id);
-        studentObject.put("name", name);
-        studentObject.put("age", age);
+        studentObject.put("id", student.getId());
+        studentObject.put("name", student.getName());
+        studentObject.put("age", student.getAge());
 
         faculty = new Faculty(1L, facultyName, color);
 
@@ -104,12 +111,13 @@ class SchoolApplicationWebMvcTest {
     @Test
     void testFindStudent() throws Exception {
 
-        when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
+        when(studentRepository.findById(any(long.class))).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/student/" + student.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(student.getId()))
                 .andExpect(jsonPath("$.name").value(student.getName()))
                 .andExpect(jsonPath("$.age").value(student.getAge()));
     }
@@ -148,14 +156,14 @@ class SchoolApplicationWebMvcTest {
     public void testAgeFilter() throws Exception {
 
         List<Student> list = new ArrayList<>(List.of(
-                new Student(1L, "1", 1),
-                new Student(2L, "2", 1),
-                new Student(3L, "3", 1)
+                new Student(1L, "name1", 20),
+                new Student(2L, "name2", 25),
+                new Student(3L, "name3", 20)
         ));
 
-        when(studentRepository.findByAge(1)).thenReturn(list);
+        when(studentRepository.findByAge(20)).thenReturn(list);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/1")
+                        .get("/student/20")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
@@ -243,8 +251,9 @@ class SchoolApplicationWebMvcTest {
         ));
 
         when(facultyRepository.findByColor("red")).thenReturn(list);
+
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/?color=red")
+                        .get("/faculty/red")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
