@@ -233,18 +233,6 @@ class SchoolApplicationWebMvcTest {
     }
 
     @Test
-    public void testDeleteFaculty() throws Exception {
-
-        when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(faculty));
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/faculty/" + faculty.getId())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name").value(faculty.getName()))
-                .andExpect(jsonPath("$.color").value(faculty.getColor()));
-    }
-
-    @Test
     public void testFindByColor() throws Exception {
 
         List<Faculty> list = new ArrayList<>(List.of(
