@@ -163,7 +163,7 @@ class SchoolApplicationWebMvcTest {
 
         when(studentRepository.findByAge(20)).thenReturn(list);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/20")
+                        .get("/student/age/20")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
@@ -192,7 +192,7 @@ class SchoolApplicationWebMvcTest {
         when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/faculty/" + student.getId())
+                        .get("/student/students-by-faculty/" + student.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(faculty.getName()));
@@ -253,7 +253,7 @@ class SchoolApplicationWebMvcTest {
         when(facultyRepository.findByColor("red")).thenReturn(list);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/red")
+                        .get("/faculty/filter/red")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));

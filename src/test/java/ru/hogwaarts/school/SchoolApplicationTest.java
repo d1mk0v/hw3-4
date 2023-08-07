@@ -60,7 +60,7 @@ class SchoolApplicationTest {
 
                 Assertions
                         .assertThat(this.testRestTemplate.getForObject(
-                                "http://localhost:" + port + "/student/1", Student.class))
+                                "http://localhost:" + port + "/student/?id=1", Student.class))
                         .isNotNull();
         }
 
@@ -115,9 +115,9 @@ class SchoolApplicationTest {
 
         @Test
         void findFacultyTest() throws Exception {
+
                 Assertions
-                        .assertThat(this.testRestTemplate.getForObject(
-                                "http://localhost:" + port + "/faculty/1", Faculty.class))
+                        .assertThat(this.testRestTemplate.getForObject("http://localhost:" + port + "/faculty/?id=1", String.class))
                         .isNotNull();
         }
 
