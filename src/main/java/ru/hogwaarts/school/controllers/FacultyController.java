@@ -54,13 +54,13 @@ public class FacultyController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("{color}")
+    @GetMapping("/filter/{color}")
     public List<Faculty> findByColor (@PathVariable String color){
         return facultyService.findByColor(color);
     }
 
     @GetMapping("/filter")
-    public Collection<Faculty> getFacultiesByNameOrColourIgnoreCase(
+    public Collection<Faculty> getFacultiesByNameOrColorIgnoreCase(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String color) {
         return facultyService.getFacultyByNameOrColorIgnoreCase(name, color);
