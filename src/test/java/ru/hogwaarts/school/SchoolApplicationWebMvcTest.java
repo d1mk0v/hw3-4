@@ -172,7 +172,7 @@ class SchoolApplicationWebMvcTest {
         when(studentRepository.findByAgeBetween(0, 2)).thenReturn(list);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/age/between/0, 2")
+                        .get("/student/age/between/?min=0&max=2")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
