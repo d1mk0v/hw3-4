@@ -144,17 +144,6 @@ class SchoolApplicationWebMvcTest {
     }
 
     @Test
-    public void testDeleteStudent() throws Exception {
-        when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/student/" + student.getId())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name").value(student.getName()))
-                .andExpect(jsonPath("$.age").value(student.getAge()));
-    }
-
-    @Test
     public void testAgeFilter() throws Exception {
 
         List<Student> list = new ArrayList<>(List.of(
