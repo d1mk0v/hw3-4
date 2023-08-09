@@ -1,5 +1,6 @@
 package ru.hogwaarts.school;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwaarts.school.controllers.AvatarController;
 import ru.hogwaarts.school.controllers.FacultyController;
@@ -29,14 +31,16 @@ import ru.hogwaarts.school.services.impl.AvatarServiceImpl;
 import ru.hogwaarts.school.services.impl.FacultyServiceImpl;
 import ru.hogwaarts.school.services.impl.StudentServiceImpl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import static java.awt.Color.red;
-import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
 @ExtendWith(MockitoExtension.class)
@@ -295,5 +299,42 @@ class SchoolApplicationWebMvcTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(faculty.getStudents().size()));
+    }
+
+    @Test
+    void testGetNumberOfAllStudents() throws Exception {
+        when(studentRepository.getNumberOfAllStudents()).thenReturn(16);
+        String result = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/student/number-of-all-students"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse()
+                .getContentAsString();
+        assertEquals("16", result);
+    }
+
+    @Test
+    void testGetAverageAgeOfStudents() throws Exception {
+        when(studentRepository.getAverageAgeOfStudents()).thenReturn(15.5);
+        String result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/student/average-age")).andReturn().getResponse().getContentAsString();
+        assertEquals("15.5", result);
+    }
+
+    @Test
+    void getLastFiveStudents() throws Exception {
+        List<Student> list = new ArrayList<>(List.of(
+                new Student(1L, "1", 1),
+                new Student(2L, "2", 1),
+                new Student(3L, "3", 1),
+                new Student(4L, "4", 1),
+                new Student(5L, "3", 1)
+        ));
+        when(studentRepository.getLastFiveStudents()).thenReturn(list);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/student/last-five-students")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()).andReturn();
+        assertEquals(result.getResponse().getContentAsString(), new ObjectMapper().writeValueAsString(list));
+
     }
 }
