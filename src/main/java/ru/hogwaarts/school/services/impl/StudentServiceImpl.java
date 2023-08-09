@@ -68,6 +68,4 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getLastFiveStudents() {
         return studentRepository.getLastFiveStudents();
     }
-
-
 }
