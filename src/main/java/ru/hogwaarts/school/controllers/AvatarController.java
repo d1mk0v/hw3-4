@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwaarts.school.models.Avatar;
 import ru.hogwaarts.school.services.api.AvatarService;
-import ru.hogwaarts.school.services.impl.AvatarServiceImpl;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping("avatar")
@@ -62,5 +62,11 @@ public class AvatarController {
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+
+    @GetMapping("/list-of-avatars")
+    public List<Avatar> getAllAvatars (@RequestParam(name = "pageNumber") Integer pageNumber,
+                                       @RequestParam(name = "pageSize") Integer pageSize) {
+        return avatarService.getAllAvatars(pageNumber, pageSize);
     }
 }

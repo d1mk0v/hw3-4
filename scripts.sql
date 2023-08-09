@@ -12,3 +12,8 @@ select * from student where age < id;
 
 select * from student ORDER BY age;
 
+SELECT count(*) FROM student;
+
+SELECT AVG(age) FROM student;
+
+SELECT * FROM student ORDER BY id DESC LIMIT 5;
