@@ -33,7 +33,7 @@ public class StudentServiceImpl implements StudentService {
     public Optional<Student> findStudent(Long id) {
         logger.info("Was invoked method for find student");
         Student foundStudent = studentRepository.findById(id).get();
-        logger.debug("Student {} was added", id);
+        logger.debug("Student {} was find", id);
         return Optional.of(foundStudent);
     }
 
