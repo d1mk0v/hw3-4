@@ -62,22 +62,25 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Faculty getStudentFaculty(Long id) {
-        logger.info("Was invoked method for filter students by age between");
+        logger.info("Was invoked method for get student faculty");
         return studentRepository.findById(id).map(Student::getFaculty).orElse(null);
     }
 
     @Override
     public Integer getNumberOfAllStudents() {
+        logger.info("Was invoked method for get number of all students");
         return studentRepository.getNumberOfAllStudents();
     }
 
     @Override
     public Double getAverageAgeOfStudents() {
+        logger.info("Was invoked method for get average age of students");
         return studentRepository.getAverageAgeOfStudents();
     }
 
     @Override
     public List<Student> getLastFiveStudents() {
+        logger.info("Was invoked method for get last five students");
         return studentRepository.getLastFiveStudents();
     }
 }
