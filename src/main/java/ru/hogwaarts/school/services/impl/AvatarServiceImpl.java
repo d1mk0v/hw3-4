@@ -1,5 +1,7 @@
 package ru.hogwaarts.school.services.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -24,9 +26,11 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Service
 @Transactional
 public class AvatarServiceImpl implements AvatarService {
-
     private final AvatarRepository avatarRepository;
+
     private final StudentRepository studentRepository;
+
+    Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
 
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
@@ -34,6 +38,10 @@ public class AvatarServiceImpl implements AvatarService {
     public AvatarServiceImpl(AvatarRepository avatarRepository, StudentRepository studentRepository) {
         this.avatarRepository = avatarRepository;
         this.studentRepository = studentRepository;
+    }
+
+    public void setAvatarsDir(String avatarsDir) {
+        this.avatarsDir = avatarsDir;
     }
 
     public AvatarRepository getAvatarRepository() {
@@ -46,6 +54,8 @@ public class AvatarServiceImpl implements AvatarService {
 
     @Override
     public void uploadAvatar(Long id, MultipartFile avatarFile) throws IOException {
+
+        logger.info("Was invoked method for upload avatar");
 
         Student student = studentRepository.getReferenceById(id);
 
@@ -71,6 +81,9 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     private byte[] generateDataForDB(Path filePath) throws IOException {
+
+        logger.info("Was invoked method for generate data for DB");
+
         try (
                 InputStream is = Files.newInputStream(filePath);
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
@@ -90,25 +103,25 @@ public class AvatarServiceImpl implements AvatarService {
     }
 
     private String getExtensions(String filename) {
+        logger.info("Was invoked method for get extensions");
         return filename.substring(filename.lastIndexOf(".") + 1);
     }
 
     @Override
     public Avatar findAvatar(Long id) {
+        logger.info("Was invoked method for find avatar");
         return avatarRepository.findByStudentId(id).orElse(new Avatar());
     }
 
     @Override
     public List<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
+        logger.info("Was invoked method for get all avatars");
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
 
-    public void setAvatarsDir(String avatarsDir) {
-        this.avatarsDir = avatarsDir;
-    }
-
     public String getAvatarsDir() {
+        logger.info("Was invoked method for get avatars directory");
         return avatarsDir;
     }
 }
