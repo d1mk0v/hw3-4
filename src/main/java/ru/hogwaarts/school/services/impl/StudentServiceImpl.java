@@ -32,13 +32,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Optional<Student> findStudent(Long id) {
         logger.info("Was invoked method for find student");
-        logger.debug("Student {} was added");
-        return studentRepository.findById(id);
+        Student foundStudent = studentRepository.findById(id).get();
+        logger.debug("Student {} was added", id);
+        return Optional.of(foundStudent);
     }
 
     @Override
     public Student editStudent(Student student) {
         logger.info("Was invoked method for edit student");
+        Student editedStudent = studentRepository.save(student);
+        logger.debug("Student {} was edited", editedStudent);
         return studentRepository.save(student);
     }
 
