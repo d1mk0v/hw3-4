@@ -1,7 +1,6 @@
 package ru.hogwaarts.school;
 
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ObjectAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,9 +16,8 @@ import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.models.Student;
 
 import java.util.Collection;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -78,8 +76,6 @@ class SchoolApplicationTest {
 
         @Test
         void deleteStudentTest() throws Exception {
-
-                Student student = new Student(1L, "Harry Potter", 16);
 
                 ResponseEntity<Void> response = testRestTemplate.exchange("/student/1", HttpMethod.DELETE,
                         null, Void.class, 1L);
@@ -148,5 +144,13 @@ class SchoolApplicationTest {
                 Assertions
                         .assertThat(this.testRestTemplate.getForEntity("http://localhost:" + port + "/students-by-id/1", Faculty.class))
                         .isNotNull();
+        }
+
+        @Test
+        void getStudentsNameStartingWithATest() {
+
+                Assertions
+                        .assertThat(this.testRestTemplate.getForEntity(
+                                "http://localhost:" + port + "/student/filter/A", String[].class));
         }
 }

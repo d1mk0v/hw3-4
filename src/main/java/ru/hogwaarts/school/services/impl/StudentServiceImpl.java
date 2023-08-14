@@ -91,6 +91,8 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<String> getStudentsNameStartingWithA() {
 
+        logger.info("Was invoked method for getting all the names of all students whose name starts with the letter A");
+
         List<Student> students = studentRepository.findAll();
 
         return students.stream()
@@ -103,6 +105,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Double getAverageAgeOfAllStudents() {
+        logger.info("Was invoked method for get average age of students");
         return studentRepository.findAll().stream()
                 .mapToInt(Student::getAge)
                 .average()
