@@ -69,4 +69,9 @@ public class AvatarController {
                                        @RequestParam(name = "pageSize") Integer pageSize) {
         return avatarService.getAllAvatars(pageNumber, pageSize);
     }
+
+    @GetMapping("/calculation")
+    public Long calculation() {
+        return avatarService.calculation();
+    }
 }
