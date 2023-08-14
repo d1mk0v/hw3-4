@@ -22,4 +22,6 @@ public interface FacultyService {
     Collection<Faculty> getFacultyByNameOrColorIgnoreCase(String name, String color);
 
     Collection<Student> getFacultyStudents(Long id);
+
+    String getLongestFacultyName();
 }

@@ -9,6 +9,7 @@ import ru.hogwaarts.school.repositories.FacultyRepository;
 import ru.hogwaarts.school.services.api.FacultyService;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,5 +63,13 @@ public class FacultyServiceImpl implements FacultyService {
     public Collection<Student> getFacultyStudents(Long id) {
         logger.info("Was invoked method for get faculty students");
         return facultyRepository.findById(id).map(Faculty::getStudents).orElse(null);
+    }
+
+    @Override
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("");
     }
 }

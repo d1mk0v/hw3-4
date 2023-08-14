@@ -11,6 +11,7 @@ import ru.hogwaarts.school.services.api.StudentService;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -85,5 +86,26 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getLastFiveStudents() {
         logger.info("Was invoked method for get last five students");
         return studentRepository.getLastFiveStudents();
+    }
+
+    @Override
+    public List<String> getStudentsNameStartingWithA() {
+
+        List<Student> students = studentRepository.findAll();
+
+        return students.stream()
+                .parallel()
+                .filter(student -> student.getName().startsWith("A"))
+                .map(student -> student.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Double getAverageAgeOfAllStudents() {
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
     }
 }

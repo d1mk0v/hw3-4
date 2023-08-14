@@ -1,6 +1,5 @@
 package ru.hogwaarts.school.services.api;
 
-import org.springframework.data.jpa.repository.Query;
 import ru.hogwaarts.school.models.Faculty;
 import ru.hogwaarts.school.models.Student;
 
@@ -27,4 +26,7 @@ public interface StudentService {
     Integer getNumberOfAllStudents();
     Double getAverageAgeOfStudents();
     List<Student> getLastFiveStudents();
+    List<String> getStudentsNameStartingWithA();
+
+    Double getAverageAgeOfAllStudents();
 }

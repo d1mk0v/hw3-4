@@ -10,6 +10,7 @@ import ru.hogwaarts.school.services.api.StudentService;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("student")
@@ -76,12 +77,24 @@ public class StudentController {
     public Integer getNumberOfAllStudents() {
         return studentService.getNumberOfAllStudents();
     }
+
     @GetMapping("/average-age")
     public Double getAverageAgeOfStudents() {
         return studentService.getAverageAgeOfStudents();
     }
+
     @GetMapping("/last-five-students")
     public List<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
+    }
+
+    @GetMapping("/filter/A")
+    public List<String> getStudentsNameStartingWithA() {
+        return studentService.getStudentsNameStartingWithA();
+    }
+
+    @GetMapping("/get-average-age")
+    public Double getAverageAgeOfAllStudents() {
+        return studentService.getAverageAgeOfAllStudents();
     }
 }
