@@ -21,41 +21,41 @@ public class FacultyController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Optional<Faculty>> findFaculty(@PathVariable long id){
+    public ResponseEntity<Optional<Faculty>> findFaculty(@PathVariable long id) {
 
         Optional<Faculty> faculty = facultyService.findFaculty(id);
 
-        if (faculty.isEmpty()){
+        if (faculty.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(faculty);
     }
 
     @PostMapping
-    public Faculty addFaculty(@RequestBody Faculty faculty){
+    public Faculty addFaculty(@RequestBody Faculty faculty) {
         return facultyService.addFaculty(faculty);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty, @PathVariable Long id){
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty, @PathVariable Long id) {
 
         Faculty foundFaculty = facultyService.editFaculty(faculty);
 
-        if (foundFaculty == null){
+        if (foundFaculty == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(foundFaculty);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteFaculty(@PathVariable Long id){
+    public ResponseEntity<Void> deleteFaculty(@PathVariable Long id) {
 
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/filter/{color}")
-    public List<Faculty> findByColor (@PathVariable String color){
+    public List<Faculty> findByColor(@PathVariable String color) {
         return facultyService.findByColor(color);
     }
 
@@ -69,5 +69,10 @@ public class FacultyController {
     @GetMapping("/students-by-id/{id}")
     public Collection<Student> getFacultyStudents(@PathVariable Long id) {
         return facultyService.getFacultyStudents(id);
+    }
+
+    @GetMapping("/longest-faculty-name")
+    public String longestFacultyName() {
+        return facultyService.getLongestFacultyName();
     }
 }

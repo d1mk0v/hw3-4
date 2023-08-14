@@ -32,6 +32,7 @@ import ru.hogwaarts.school.services.impl.FacultyServiceImpl;
 import ru.hogwaarts.school.services.impl.StudentServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,8 +40,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest
 @ExtendWith(MockitoExtension.class)
@@ -117,8 +118,7 @@ class SchoolApplicationWebMvcTest {
 
         when(studentRepository.findById(any(long.class))).thenReturn(Optional.of(student));
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/" + student.getId())
+        mockMvc.perform(get("/student/" + student.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(student.getId()))
@@ -166,8 +166,7 @@ class SchoolApplicationWebMvcTest {
         ));
 
         when(studentRepository.findByAge(20)).thenReturn(list);
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/age/20")
+        mockMvc.perform(get("/student/age/20")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
@@ -184,8 +183,7 @@ class SchoolApplicationWebMvcTest {
 
         when(studentRepository.findByAgeBetween(0, 2)).thenReturn(list);
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/age/between/?min=0&max=2")
+        mockMvc.perform(get("/student/age/between/?min=0&max=2")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
@@ -195,8 +193,7 @@ class SchoolApplicationWebMvcTest {
     public void testGetStudentFaculty() throws Exception {
         when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/students-by-faculty/" + student.getId())
+        mockMvc.perform(get("/student/students-by-faculty/" + student.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(faculty.getName()));
@@ -207,8 +204,7 @@ class SchoolApplicationWebMvcTest {
 
         when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(faculty));
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/" + faculty.getId())
+        mockMvc.perform(get("/faculty/" + faculty.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(faculty.getName()))
@@ -256,8 +252,7 @@ class SchoolApplicationWebMvcTest {
 
         when(facultyRepository.findByColor("red")).thenReturn(list);
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/filter/red")
+        mockMvc.perform(get("/faculty/filter/red")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
@@ -274,8 +269,7 @@ class SchoolApplicationWebMvcTest {
 
         when(facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(anyString(), anyString())).thenReturn(list);
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/filter?name=red&color=green")
+        mockMvc.perform(get("/faculty/filter?name=red&color=green")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(list.size()));
@@ -294,8 +288,7 @@ class SchoolApplicationWebMvcTest {
 
         when(facultyRepository.findById(any(Long.class))).thenReturn(Optional.of(faculty));
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty//students-by-id/" + student.getId())
+        mockMvc.perform(get("/faculty//students-by-id/" + student.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(faculty.getStudents().size()));
@@ -304,8 +297,7 @@ class SchoolApplicationWebMvcTest {
     @Test
     void testGetNumberOfAllStudents() throws Exception {
         when(studentRepository.getNumberOfAllStudents()).thenReturn(16);
-        String result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/number-of-all-students"))
+        String result = mockMvc.perform(get("/student/number-of-all-students"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse()
                 .getContentAsString();
@@ -315,13 +307,12 @@ class SchoolApplicationWebMvcTest {
     @Test
     void testGetAverageAgeOfStudents() throws Exception {
         when(studentRepository.getAverageAgeOfStudents()).thenReturn(15.5);
-        String result = mockMvc.perform(MockMvcRequestBuilders
-                .get("/student/average-age")).andReturn().getResponse().getContentAsString();
+        String result = mockMvc.perform(get("/student/average-age")).andReturn().getResponse().getContentAsString();
         assertEquals("15.5", result);
     }
 
     @Test
-    void getLastFiveStudents() throws Exception {
+    void testGetLastFiveStudents() throws Exception {
         List<Student> list = new ArrayList<>(List.of(
                 new Student(1L, "1", 1),
                 new Student(2L, "2", 1),
@@ -330,11 +321,40 @@ class SchoolApplicationWebMvcTest {
                 new Student(5L, "3", 1)
         ));
         when(studentRepository.getLastFiveStudents()).thenReturn(list);
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/last-five-students")
+        MvcResult result = mockMvc.perform(get("/student/last-five-students")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
         assertEquals(result.getResponse().getContentAsString(), new ObjectMapper().writeValueAsString(list));
 
+    }
+
+    @Test
+    void testGetAverageAgeOfAllStudents() throws Exception {
+
+        List<Student> students = Arrays.asList(
+                new Student(1L, "Alice", 20),
+                new Student(2L, "Bob", 25),
+                new Student(3L, "Amy", 30)
+        );
+        when(studentRepository.findAll()).thenReturn(students);
+
+        mockMvc.perform(get("/student/get-average-age"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("25.0"));
+    }
+
+    @Test
+    void testGetLongestFacultyName() throws Exception {
+
+        List<Faculty> faculties = Arrays.asList(
+                new Faculty(1L, "Gryffindor", "green"),
+                new Faculty(2L, "Slytherin", "red"),
+                new Faculty(3L, "Ravenclaw", "blue")
+        );
+        when(facultyRepository.findAll()).thenReturn(faculties);
+
+        mockMvc.perform(get("/faculty/longest-faculty-name"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Gryffindor"));
     }
 }

@@ -20,6 +20,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.LongStream;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -123,5 +124,12 @@ public class AvatarServiceImpl implements AvatarService {
     public String getAvatarsDir() {
         logger.info("Was invoked method for get avatars directory");
         return avatarsDir;
+    }
+
+    @Override
+    public Long calculation() {
+        return LongStream.rangeClosed(1, 1_000_000)
+                .parallel()
+                .sum();
     }
 }
