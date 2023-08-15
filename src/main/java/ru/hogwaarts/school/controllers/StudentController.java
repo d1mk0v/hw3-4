@@ -97,4 +97,14 @@ public class StudentController {
     public Double getAverageAgeOfAllStudents() {
         return studentService.getAverageAgeOfAllStudents();
     }
+
+    @GetMapping("/print-student-non-synchronized")
+    public void printStudentsNonSynchronized() {
+        studentService.printStudentsNonSynchronized();
+    }
+
+//    @GetMapping("/print-student-synchronized")
+//    public void printStudentsSynchronized() {
+//        studentService.printStudentsSynchronized();
+//    }
 }

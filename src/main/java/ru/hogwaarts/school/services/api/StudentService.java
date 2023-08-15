@@ -29,4 +29,9 @@ public interface StudentService {
     List<String> getStudentsNameStartingWithA();
 
     Double getAverageAgeOfAllStudents();
+
+    void printStudentsNonSynchronized();
+
+    void printStudentsSynchronized();
+
 }
