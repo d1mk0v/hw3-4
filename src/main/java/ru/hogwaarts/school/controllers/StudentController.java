@@ -103,8 +103,8 @@ public class StudentController {
         studentService.printStudentsNonSynchronized();
     }
 
-//    @GetMapping("/print-student-synchronized")
-//    public void printStudentsSynchronized() {
-//        studentService.printStudentsSynchronized();
-//    }
+    @GetMapping("/print-student-synchronized")
+    public void printStudentsSynchronized() {
+        studentService.printStudentsSynchronized();
+    }
 }

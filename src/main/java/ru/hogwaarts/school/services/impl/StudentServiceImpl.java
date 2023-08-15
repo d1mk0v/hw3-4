@@ -20,6 +20,8 @@ public class StudentServiceImpl implements StudentService {
 
     Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
+    private static final Object lock = new Object();
+
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
@@ -134,9 +136,30 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void printStudentsSynchronized() {
 
+        List<Student> students = studentRepository.findAll();
+
+        printStudentsNameSynchronized("1. " + students.get(0).getName());
+        printStudentsNameSynchronized("2. " + students.get(1).getName());
+
+        new Thread(() -> {
+            printStudentsNameSynchronized("3. " + students.get(2).getName());
+            printStudentsNameSynchronized("4. " + students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            printStudentsNameSynchronized("5. " + students.get(4).getName());
+            printStudentsNameSynchronized("6. " + students.get(5).getName());
+        }).start();
+
     }
 
     private void printStudentsName(String name) {
             System.out.println(name);
         }
+
+    private void printStudentsNameSynchronized(String name) {
+        synchronized (lock) {
+            System.out.println(name);
+        }
+    }
 }
