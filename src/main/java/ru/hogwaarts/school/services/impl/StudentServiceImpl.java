@@ -111,4 +111,59 @@ public class StudentServiceImpl implements StudentService {
                 .average()
                 .orElse(0.0);
     }
+
+    @Override
+    public void printStudentsNonSynchronized() {
+
+        List<Student> students = studentRepository.findAll();
+
+        printStudentsName(students.get(0).getName());
+        printStudentsName(students.get(1).getName());
+
+        new Thread(() -> {
+            printStudentsName(students.get(2).getName());
+            printStudentsName(students.get(3).getName());
+        }).start();
+
+        new Thread(() -> {
+            printStudentsName(students.get(4).getName());
+            printStudentsName(students.get(5).getName());
+        }).start();
+    }
+
+    @Override
+    public void printStudentsSynchronized() throws InterruptedException {
+
+        List<Student> students = studentRepository.findAll();
+
+        printStudentsNameSynchronized(students);
+        printStudentsNameSynchronized(students);
+
+        new Thread(() -> {
+            //Для проверки упорядоченности
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            printStudentsNameSynchronized(students);
+            printStudentsNameSynchronized(students);
+        }).start();
+
+        new Thread(() -> {
+            printStudentsNameSynchronized(students);
+            printStudentsNameSynchronized(students);
+        }).start();
+
+    }
+
+    private void printStudentsName(String name) {
+            System.out.println(name);
+        }
+
+    int index;
+    private void printStudentsNameSynchronized(List<Student> students) {
+            System.out.println(students.get(index++));
+    }
 }
