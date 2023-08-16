@@ -20,8 +20,6 @@ public class StudentServiceImpl implements StudentService {
 
     Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
-    private static final Object lock = new Object();
-
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
@@ -134,21 +132,28 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void printStudentsSynchronized() {
+    public void printStudentsSynchronized() throws InterruptedException {
 
         List<Student> students = studentRepository.findAll();
 
-        printStudentsNameSynchronized("1. " + students.get(0).getName());
-        printStudentsNameSynchronized("2. " + students.get(1).getName());
+        printStudentsNameSynchronized(students);
+        printStudentsNameSynchronized(students);
 
         new Thread(() -> {
-            printStudentsNameSynchronized("3. " + students.get(2).getName());
-            printStudentsNameSynchronized("4. " + students.get(3).getName());
+            //Для проверки упорядоченности
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            printStudentsNameSynchronized(students);
+            printStudentsNameSynchronized(students);
         }).start();
 
         new Thread(() -> {
-            printStudentsNameSynchronized("5. " + students.get(4).getName());
-            printStudentsNameSynchronized("6. " + students.get(5).getName());
+            printStudentsNameSynchronized(students);
+            printStudentsNameSynchronized(students);
         }).start();
 
     }
@@ -157,9 +162,8 @@ public class StudentServiceImpl implements StudentService {
             System.out.println(name);
         }
 
-    private void printStudentsNameSynchronized(String name) {
-        synchronized (lock) {
-            System.out.println(name);
-        }
+    int index;
+    private void printStudentsNameSynchronized(List<Student> students) {
+            System.out.println(students.get(index++));
     }
 }

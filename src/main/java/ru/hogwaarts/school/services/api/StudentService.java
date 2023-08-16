@@ -32,6 +32,6 @@ public interface StudentService {
 
     void printStudentsNonSynchronized();
 
-    void printStudentsSynchronized();
+    void printStudentsSynchronized() throws InterruptedException;
 
 }

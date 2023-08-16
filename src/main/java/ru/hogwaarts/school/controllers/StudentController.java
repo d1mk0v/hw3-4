@@ -104,7 +104,7 @@ public class StudentController {
     }
 
     @GetMapping("/print-student-synchronized")
-    public void printStudentsSynchronized() {
+    public void printStudentsSynchronized() throws InterruptedException {
         studentService.printStudentsSynchronized();
     }
 }
